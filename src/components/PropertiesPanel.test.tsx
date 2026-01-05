@@ -27,19 +27,21 @@ describe('PropertiesPanel', () => {
     ];
 
     beforeEach(() => {
-        // Default implementation: selection exists
         (useStore as unknown as jest.Mock).mockImplementation((selector) => {
-             if (selector.toString().includes('nodes')) return mockNodes;
-             if (selector.toString().includes('updateNodeData')) return mockUpdateNodeData;
-             return [];
+             return selector({
+                 nodes: mockNodes,
+                 updateNodeData: mockUpdateNodeData
+             });
         });
         jest.clearAllMocks();
     });
 
     it('renders empty state when no node is selected', () => {
          (useStore as unknown as jest.Mock).mockImplementation((selector) => {
-             if (selector.toString().includes('nodes')) return []; // No nodes
-             return mockUpdateNodeData;
+              return selector({
+                  nodes: [],
+                  updateNodeData: mockUpdateNodeData
+              });
         });
 
         render(<PropertiesPanel />);

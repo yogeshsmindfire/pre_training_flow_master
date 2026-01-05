@@ -5,14 +5,24 @@ import useStore from '../store/useStore';
 import { Position } from 'reactflow';
 
 // Mock ReactFlow components/functions
-jest.mock('reactflow', () => ({
-  BaseEdge: () => <path data-testid="base-edge" />,
-  EdgeLabelRenderer: ({ children }: any) => <div>{children}</div>,
-  getBezierPath: () => ['M0,0 C100,0 100,100 200,100', 100, 50], // path, labelX, labelY
-  Position: {
-      Top: 'top',
-  }
-}));
+jest.mock('reactflow', () => {
+  const MockBaseEdge = () => <path data-testid="base-edge" />;
+  const MockEdgeLabelRenderer = ({ children }: any) => <div>{children}</div>;
+  
+  return {
+    __esModule: true,
+    default: {
+         BaseEdge: MockBaseEdge,
+         EdgeLabelRenderer: MockEdgeLabelRenderer,
+         getBezierPath: () => ['M0,0 C100,0 100,100 200,100', 100, 50],
+         Position: { Top: 'top' }
+    },
+    BaseEdge: MockBaseEdge,
+    EdgeLabelRenderer: MockEdgeLabelRenderer,
+    getBezierPath: () => ['M0,0 C100,0 100,100 200,100', 100, 50],
+    Position: { Top: 'top' }
+  };
+});
 
 // Mock store
 jest.mock('../store/useStore');

@@ -50,11 +50,21 @@ describe('serialization utils', () => {
 
     // Mock anchor element
     const mockAnchor = {
-      href: '',
-      download: '',
-      click: clickSpy,
-    } as unknown as HTMLAnchorElement;
-
+        click: clickSpy,
+        // We need to allow setting href and download
+        setAttribute: jest.fn(),
+    } as any; /* Use a proxy or just an object that accepts properties? 
+                 In JSDOM/Jest, assigning to properties on a plain object works. 
+                 The issue earlier might be reference related or timing?
+                 Wait, if I assign mockAnchor.href = '', it sets the property on the object.
+                 Why did it return undefined in the failure?
+                 Maybe because 'href' is a setter on the real DOM element?
+                 But I returned a plain object: `const mockAnchor = { href: '', ... }`.
+                 So assigning to it should work.
+                 
+                 Let's ensure it's a fresh object.
+                 */
+    
     createElementSpy.mockReturnValue(mockAnchor);
 
     downloadJSON(mockData, 'test.json');
