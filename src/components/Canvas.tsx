@@ -78,6 +78,7 @@ const Canvas = () => {
 
   return (
     <div
+      data-testid="canvas-wrapper"
       className="h-full w-full flex-1 bg-gray-50 from-gray-50 to-gray-100"
       onDragOver={onDragOver}
       onDrop={onDrop}
