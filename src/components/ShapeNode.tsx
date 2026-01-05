@@ -1,8 +1,9 @@
-import React, { memo } from 'react';
-import { Handle, Position, NodeProps } from 'reactflow';
+import React, { memo, useState, useRef, useEffect, KeyboardEvent } from 'react';
+import { Handle, Position, NodeProps, NodeResizer } from 'reactflow';
 import { NodeData } from '../types';
+import useStore from '../store/useStore';
 
-const ShapeNode = ({ data, selected }: NodeProps<NodeData>) => {
+const ShapeNode = ({ id, data, selected }: NodeProps<NodeData>) => {
   const { 
      label, 
      type = 'rectangle', 
@@ -15,6 +16,24 @@ const ShapeNode = ({ data, selected }: NodeProps<NodeData>) => {
      textDecoration,
      textAlign = 'center'
   } = data;
+
+  const updateNodeData = useStore((state) => state.updateNodeData);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(label);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Sync internal state with prop if it changes outside
+  useEffect(() => {
+    setEditText(label);
+  }, [label]);
+
+  // Focus textarea when editing starts
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.select();
+    }
+  }, [isEditing]);
 
   const style: React.CSSProperties = {
      fill,
@@ -30,15 +49,22 @@ const ShapeNode = ({ data, selected }: NodeProps<NodeData>) => {
      textAlign: textAlign as any,
   };
 
-  // SVGs for shapes
-  // We render the SVG as a background or main element
-  const width = 100; // Default base size, scaled by node style usually, but here handled by SVG
-  const height = 100;
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditing(true);
+  };
 
-  // We can use a 100x100 viewBox and let the node container handle resizing (if Resizer is used)
-  // But for this scaffold, we assume the node is sized 100x100 or whatever style says.
-  // Actually, standard React Node gets its width/height from the wrapper.
-  // We will make the SVG fill the wrapper.
+  const handleBlur = () => {
+    setIsEditing(false);
+    updateNodeData(id, { label: editText });
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleBlur();
+    }
+  };
 
   const renderShape = () => {
       switch (type) {
@@ -65,19 +91,39 @@ const ShapeNode = ({ data, selected }: NodeProps<NodeData>) => {
   };
 
   return (
-    <div className="w-full h-full relative group">
+    <div className="w-full h-full relative group" onDoubleClick={handleDoubleClick}>
+      <NodeResizer 
+        isVisible={selected} 
+        minWidth={50} 
+        minHeight={50} 
+        lineStyle={{ border: '1px solid #2563eb' }}
+        handleStyle={{ width: 8, height: 8, background: '#2563eb' }}
+      />
+
       <svg className="w-full h-full absolute top-0 left-0 overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
          {renderShape()}
       </svg>
       
-      {/* Label */}
-      <div className="absolute inset-0 flex items-center justify-center p-2 pointer-events-none">
-          <span style={textStyle} className="text-sm font-sans pointer-events-auto break-words w-full h-full flex items-center justify-center text-foreground">
-              {label}
-          </span>
+      {/* Label or Editor */}
+      <div className="absolute inset-0 flex items-center justify-center p-2">
+          {isEditing ? (
+              <textarea
+                ref={textareaRef}
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
+                className="w-full h-full bg-transparent border-none outline-none resize-none overflow-hidden text-center font-sans m-auto"
+                style={{ ...textStyle, color: style.stroke }} // keeping text color same as stroke or black default
+              />
+          ) : (
+            <span style={textStyle} className="text-sm font-sans pointer-events-none break-words w-full h-full flex items-center justify-center text-foreground select-none">
+                {label}
+            </span>
+          )}
       </div>
 
-      {/* Handles */}
+      {/* Handles - visible on hover or selected */}
       <Handle type="target" position={Position.Top} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
       <Handle type="source" position={Position.Top} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
       

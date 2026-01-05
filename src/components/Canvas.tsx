@@ -5,7 +5,8 @@ import ReactFlow, {
   MiniMap, 
   useReactFlow,
   BackgroundVariant,
-  ConnectionMode
+  ConnectionMode,
+  MarkerType
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import useStore from '../store/useStore';
@@ -80,7 +81,7 @@ const Canvas = () => {
         nodeTypes={nodeTypes}
         fitView
         className="bg-gray-50"
-        defaultEdgeOptions={{ type: 'smoothstep', animated: true, style: { strokeWidth: 2, stroke: '#64748b' } }}
+        defaultEdgeOptions={{ type: 'smoothstep', animated: true, style: { strokeWidth: 2, stroke: '#64748b' }, markerEnd: { type: MarkerType.ArrowClosed } }}
         snapToGrid={true}
         snapGrid={[15, 15]}
         connectionMode={ConnectionMode.Loose}

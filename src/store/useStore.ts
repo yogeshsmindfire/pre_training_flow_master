@@ -141,6 +141,7 @@ const useStore = create<StoreState>((set, get) => ({
         sourceHandle: connection.sourceHandle,
         targetHandle: connection.targetHandle,
         type: 'smoothstep', 
+        pathOptions: { borderRadius: 20 },
         markerEnd: { type: MarkerType.ArrowClosed } 
     };
 
