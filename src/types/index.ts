@@ -1,6 +1,18 @@
 import { Node, Edge } from 'reactflow';
 
-export type ShapeType = 'rectangle' | 'circle' | 'diamond' | 'triangle' | 'hexagon' | 'cylinder' | 'actor' | 'database' | 'process' | 'terminal' | 'input' | 'network';
+export type ShapeType =
+  | 'rectangle'
+  | 'circle'
+  | 'diamond'
+  | 'triangle'
+  | 'hexagon'
+  | 'cylinder'
+  | 'actor'
+  | 'database'
+  | 'process'
+  | 'terminal'
+  | 'input'
+  | 'network';
 
 export interface NodeData {
   label: string;

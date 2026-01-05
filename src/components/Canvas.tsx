@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import ReactFlow, { 
-  Background, 
-  Controls, 
-  MiniMap, 
+import ReactFlow, {
+  Background,
+  Controls,
+  MiniMap,
   useReactFlow,
   BackgroundVariant,
   ConnectionMode,
-  MarkerType
+  MarkerType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import useStore from '../store/useStore';
@@ -59,25 +59,29 @@ const Canvas = () => {
         id: uuidv4(),
         type: 'shape',
         position,
-        data: { 
-            label: `${type}`,
-            type: type as any, 
-            fill: '#ffffff',
-            stroke: '#000000',
-            strokeWidth: 2,
-            opacity: 1,
-            labelStyle: { fill: '#000000' }
+        data: {
+          label: `${type}`,
+          type: type as any,
+          fill: '#ffffff',
+          stroke: '#000000',
+          strokeWidth: 2,
+          opacity: 1,
+          labelStyle: { fill: '#000000' },
         },
         style: { width: 100, height: 100 },
       };
 
       addNode(newNode);
     },
-    [project, addNode]
+    [project, addNode],
   );
 
   return (
-    <div className="flex-1 h-full w-full bg-gray-50 from-gray-50 to-gray-100" onDragOver={onDragOver} onDrop={onDrop}>
+    <div
+      className="h-full w-full flex-1 bg-gray-50 from-gray-50 to-gray-100"
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -88,19 +92,24 @@ const Canvas = () => {
         edgeTypes={edgeTypes}
         fitView
         className="bg-gray-50"
-        defaultEdgeOptions={{ type: 'default', animated: false, style: { strokeWidth: 2, stroke: '#000000' }, markerEnd: { type: MarkerType.ArrowClosed } }}
+        defaultEdgeOptions={{
+          type: 'default',
+          animated: false,
+          style: { strokeWidth: 2, stroke: '#000000' },
+          markerEnd: { type: MarkerType.ArrowClosed },
+        }}
         connectionMode={ConnectionMode.Loose}
       >
         <Background variant={BackgroundVariant.Dots} gap={15} size={1} color="#e2e8f0" />
-        <Controls className="!bg-white !border-gray-200 !shadow-sm !text-gray-600" />
-        <MiniMap 
-            zoomable 
-            pannable 
-            className="!bg-white !border-gray-200 shadow-lg rounded-lg overflow-hidden m-4" 
-            nodeColor={(n) => {
-                if (n.data?.fill) return n.data.fill;
-                return '#eff6ff';
-            }}
+        <Controls className="!border-gray-200 !bg-white !text-gray-600 !shadow-sm" />
+        <MiniMap
+          zoomable
+          pannable
+          className="m-4 overflow-hidden rounded-lg !border-gray-200 !bg-white shadow-lg"
+          nodeColor={(n) => {
+            if (n.data?.fill) return n.data.fill;
+            return '#eff6ff';
+          }}
         />
       </ReactFlow>
     </div>

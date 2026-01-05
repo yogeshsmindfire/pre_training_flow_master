@@ -10,22 +10,21 @@ import './index.css';
 function App() {
   return (
     <ReactFlowProvider>
-      <div className="flex flex-col h-screen w-screen bg-background overflow-hidden text-foreground">
-        
+      <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
         {/* Header Area */}
         <Header />
-        
+
         {/* Quick Toolbar */}
         <Toolbar />
-        
+
         {/* Main Workspace */}
-        <div className="flex flex-1 overflow-hidden relative">
+        <div className="relative flex flex-1 overflow-hidden">
           {/* Left: Shape Library */}
           <Sidebar />
 
           {/* Center: Canvas */}
-          <main className="flex-1 relative bg-gray-50 h-full">
-             <Canvas />
+          <main className="relative h-full flex-1 bg-gray-50">
+            <Canvas />
           </main>
 
           {/* Right: Format Panel */}

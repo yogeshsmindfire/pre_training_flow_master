@@ -37,7 +37,7 @@ const CustomEdge = ({
           className="nopan"
         >
           <button
-            className="w-5 h-5 bg-white border border-gray-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-50 hover:border-red-500 hover:text-red-500 shadow-sm transition-colors text-gray-500"
+            className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white text-gray-500 shadow-sm transition-colors hover:border-red-500 hover:bg-red-50 hover:text-red-500"
             onClick={() => deleteEdge(id)}
             aria-label="Delete edge"
           >
