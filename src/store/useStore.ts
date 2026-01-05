@@ -38,6 +38,7 @@ interface StoreState {
   
   addNode: (node: AppNode) => void;
   updateNodeData: (id: string, data: Partial<NodeData>) => void;
+  deleteEdge: (id: string) => void;
   
   // History Actions
   undo: () => void;
@@ -140,8 +141,8 @@ const useStore = create<StoreState>((set, get) => ({
         target: connection.target || '',
         sourceHandle: connection.sourceHandle,
         targetHandle: connection.targetHandle,
-        type: 'smoothstep', 
-        pathOptions: { borderRadius: 20 },
+        type: 'default', 
+        style: { strokeWidth: 2, stroke: '#000000' },
         markerEnd: { type: MarkerType.ArrowClosed } 
     };
 
@@ -184,6 +185,22 @@ const useStore = create<StoreState>((set, get) => ({
             set((state) => ({
                 nodes: state.nodes.map((n) => (n.id === id ? { ...n, data: oldData } : n)),
             }));
+        }
+    };
+    command.execute();
+    get().pushCommand(command);
+  },
+
+  deleteEdge: (id: string) => {
+    const edge = get().edges.find((e) => e.id === id);
+    if (!edge) return;
+
+    const command: Command = {
+        execute: () => {
+            set((state) => ({ edges: state.edges.filter((e) => e.id !== id) }));
+        },
+        undo: () => {
+            set((state) => ({ edges: [...state.edges, edge] }));
         }
     };
     command.execute();

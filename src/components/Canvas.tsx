@@ -14,8 +14,14 @@ import ShapeNode from './ShapeNode';
 import { v4 as uuidv4 } from 'uuid';
 import { AppNode } from '../types';
 
+import CustomEdge from './CustomEdge';
+
 const nodeTypes = {
   shape: ShapeNode,
+};
+
+const edgeTypes = {
+  default: CustomEdge,
 };
 
 const Canvas = () => {
@@ -79,11 +85,10 @@ const Canvas = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
         className="bg-gray-50"
-        defaultEdgeOptions={{ type: 'smoothstep', animated: true, style: { strokeWidth: 2, stroke: '#64748b' }, markerEnd: { type: MarkerType.ArrowClosed } }}
-        snapToGrid={true}
-        snapGrid={[15, 15]}
+        defaultEdgeOptions={{ type: 'default', animated: false, style: { strokeWidth: 2, stroke: '#000000' }, markerEnd: { type: MarkerType.ArrowClosed } }}
         connectionMode={ConnectionMode.Loose}
       >
         <Background variant={BackgroundVariant.Dots} gap={15} size={1} color="#e2e8f0" />

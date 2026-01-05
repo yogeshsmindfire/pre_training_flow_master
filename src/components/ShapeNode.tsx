@@ -113,28 +113,28 @@ const ShapeNode = ({ id, data, selected }: NodeProps<NodeData>) => {
                 onChange={(e) => setEditText(e.target.value)}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
-                className="w-full h-full bg-transparent border-none outline-none resize-none overflow-hidden text-center font-sans m-auto"
+                className="w-full h-full bg-transparent border-none outline-none resize-none overflow-hidden font-sans m-auto"
                 style={{ ...textStyle, color: style.stroke }} // keeping text color same as stroke or black default
               />
           ) : (
-            <span style={textStyle} className="text-sm font-sans pointer-events-none break-words w-full h-full flex items-center justify-center text-foreground select-none">
+            <span style={textStyle} className="text-sm font-sans pointer-events-none break-words w-full h-full flex flex-col justify-center text-foreground select-none">
                 {label}
             </span>
           )}
       </div>
 
       {/* Handles - visible on hover or selected */}
-      <Handle type="target" position={Position.Top} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <Handle type="source" position={Position.Top} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="top" type="target" position={Position.Top} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="top" type="source" position={Position.Top} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
       
-      <Handle type="target" position={Position.Right} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <Handle type="source" position={Position.Right} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="right" type="target" position={Position.Right} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="right" type="source" position={Position.Right} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-      <Handle type="target" position={Position.Bottom} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <Handle type="source" position={Position.Bottom} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="bottom" type="target" position={Position.Bottom} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="bottom" type="source" position={Position.Bottom} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-      <Handle type="target" position={Position.Left} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <Handle type="source" position={Position.Left} className="w-2 h-2 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="left" type="target" position={Position.Left} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <Handle id="left" type="source" position={Position.Left} className="w-3 h-3 !bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   );
 };
